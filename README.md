@@ -12,8 +12,9 @@ The example will print "aptible/docker-cron-example" once every minute.
 
 ## Including Within An App On Aptible
 
-To include within an Aptible app, copy the two body lines of the Dockerfile to your own Dockerfile:
+To include within an Aptible app, copy the three body lines of the Dockerfile to your own Dockerfile:
 
+    RUN apt-get -y install rsyslog
     ADD files/etc/crontab /etc/crontab
     RUN touch /var/log/cron.log
 
@@ -21,7 +22,7 @@ Then, copy files/etc/crontab to your own repo, replacing `echo aptible/docker-cr
 
 Finally, add an entry in your Procfile for the new `cron` process:
 
-    cron: cron && tail -f /var/log/cron.log
+    cron: rsyslogd && cron && tail -f /var/log/syslog /var/log/cron.log
 
 ## Copyright and License
 
