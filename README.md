@@ -16,13 +16,14 @@ To include within an Aptible app, copy the three body lines of the Dockerfile to
 
     RUN apt-get -y install rsyslog
     ADD files/etc/crontab /etc/crontab
+    ADD bin/start-cron.sh /usr/bin/start-cron.sh
     RUN touch /var/log/cron.log
 
-Then, copy files/etc/crontab to your own repo, replacing `echo aptible/docker-cron-example` with your own task, and `* * * * *` with your own desired job schedule.
+Then, copy files/etc/crontab to your own repo, replacing `echo aptible/docker-cron-example` with your own task, and `* * * * *` with your own desired job schedule. Also copy bin/start-cron.sh to your repo.
 
 Finally, add an entry in your Procfile for the new `cron` process:
 
-    cron: rsyslogd && cron && tail -f /var/log/syslog /var/log/cron.log
+    cron: /usr/bin/start-cron.sh
 
 ## Copyright and License
 
