@@ -12,7 +12,7 @@ The example will print "aptible/docker-cron-example" once every minute.
 
 ## Including Within An App On Aptible
 
-To include within an Aptible app, copy the three body lines of the Dockerfile to your own Dockerfile:
+To include within an Aptible app, copy the following 5 body lines of the Dockerfile to your own Dockerfile:
 
     RUN apt-get -y install rsyslog
     ADD files/etc/crontab /etc/crontab
@@ -20,7 +20,33 @@ To include within an Aptible app, copy the three body lines of the Dockerfile to
     RUN chmod +x /usr/bin/start-cron.sh
     RUN touch /var/log/cron.log
 
-Then, copy files/etc/crontab to your own repo, replacing `echo aptible/docker-cron-example` with your own task, and `* * * * *` with your own desired job schedule. Also copy bin/start-cron.sh to your repo.
+* Installs ```rsyslog``` http://www.rsyslog.com/
+* Copies ```crontab``` from repo/app data to Docker
+* Copies ```start-cron.sh``` from repo/app data to Docker
+* Adjusts permissions
+* Creates log file at ```/var/log/cron.log```
+
+Then, copy ```files``` to your own repo, editing ```files/etc/crontab``` with your own task, and `* * * * *` with your own desired job schedule.
+
+Crash course on cron(tab) job schedules https://en.wikipedia.org/wiki/Cron#Format. Consider the asterisk (```*```) like a wild card. Left to rigt the argument positions are:
+
+```
+[Minute Arg] [Hours Arg] [Day of month arg] [Month arg] [Day of week]
+```
+
+To run every 5 minutes:
+
+```
+*/5 * * * *
+```
+
+To run every 5 hours:
+
+```
+0 */5 * * *
+```
+
+
 
 Finally, add an entry in your Procfile for the new `cron` process:
 
@@ -30,6 +56,6 @@ Finally, add an entry in your Procfile for the new `cron` process:
 
 MIT License, see [LICENSE](LICENSE.md) for details.
 
-Copyright (c) 2014 [Aptible](https://www.aptible.com) and contributors.
+Copyright (c) 2015 [Aptible](https://www.aptible.com) and contributors.
 
 [<img src="https://s.gravatar.com/avatar/f7790b867ae619ae0496460aa28c5861?s=60" style="border-radius: 50%;" alt="@fancyremarker" />](https://github.com/fancyremarker)
