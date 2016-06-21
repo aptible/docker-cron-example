@@ -1,0 +1,1 @@
+* * * * * echo aptible/docker-cron-example >> /var/log/cron.log 2>&1
